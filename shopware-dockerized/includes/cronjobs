@@ -1,0 +1,10 @@
+# delete old ElasticSearch indexes every day at 2am
+0 2 * * * www-data cd /var/www/html && /usr/bin/php bin/console sw:es:index:cleanup >> /var/log/elasticsearch-delete-old-indexes.log 2>&1
+0 2 * * * www-data cd /var/www/html && /usr/bin/php bin/console sw:es:backend:index:cleanup >> /var/log/elasticsearch-delete-old-backend-indexes.log 2>&1
+
+# clear ElasticSearch backlog every day at 2am
+0 2 * * * www-data cd /var/www/html && /usr/bin/php bin/console sw:es:backlog:clear >> /var/log/elasticsearch-backlog-clear.log 2>&1
+
+# sync ElasticSearch indexes every 15 minutes
+*/15 * * * * www-data cd /var/www/html && /usr/bin/php bin/console sw:es:backlog:sync >> /var/log/elasticsearch-app-sync.log 2>&1
+*/15 * * * * www-data cd /var/www/html && /usr/bin/php bin/console sw:es:backend:sync >> /var/log/elasticsearch-backend-sync.log 2>&1
